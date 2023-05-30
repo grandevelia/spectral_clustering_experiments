@@ -26,7 +26,7 @@ def graph_eigs(G):
 test = nx.karate_club_graph()
 clusters = spectral_cluster(test, 4)
 nx.draw_spring(test, with_labels=True, node_color=clusters)
-plt.show()
+plt.savefig('proof.png', bbox_inches='tight')
 
 #In[2]
 def compose_n(graphlist, depth=0):
@@ -49,15 +49,9 @@ plt.close()
 n_graphs = 2
 k = 3
 G = compose_n(n_karates(n_graphs))
-
-nx.draw_spring(G, with_labels=True)
-plt.show()
-
-#In[3]
-plt.close()
 clusters = spectral_cluster(G, k)
 nx.draw_spring(G, with_labels=True, node_color=clusters)
-plt.show()
+plt.savefig("n2.k3.png", bbox_inches='tight')
 
 #In[4]
 #k=2 on 3
@@ -67,7 +61,7 @@ k = 2
 G = compose_n(n_karates(n_graphs))
 clusters = spectral_cluster(G, k)
 nx.draw_spring(G, with_labels=True, node_color=clusters)
-plt.show()
+plt.savefig("n3.k2.png", bbox_inches='tight')
 
 #In[5]
 #k=2 on 5
@@ -77,12 +71,12 @@ k = 2
 G = compose_n(n_karates(n_graphs))
 clusters = spectral_cluster(G, k)
 nx.draw_spring(G, with_labels=True, node_color=clusters)
-plt.show()
+plt.savefig("n5.k2.png", bbox_inches='tight')
 
 #In[6]
 #visualize eigenvector components for n_graphs = 3, k = 2
 n_graphs = 3
-k = 2
+k = 3
 G = compose_n(n_karates(n_graphs))
 e, v = graph_eigs(G)
 v = v[:, -k:]
@@ -90,12 +84,14 @@ fig, (ax1, ax2) = plt.subplots(2)
 fig.suptitle('Values of each point in the first 2 eigenvectors; 3 connected components, 2 clusters')
 ax1.bar(list(range(len(v[:, 0]))), v[:, 0])
 ax2.bar(list(range(len(v[:, 1]))), v[:, 1])
+plt.savefig("n3.k2.eigenvector_magnitudes.png", bbox_inches='tight')
 
 
 #In[7]
 #visualize 2D eigen embeddings for n_graphs = 3, k = 2
 plt.close()
 plt.scatter(v[:, 0], v[:, 1])
+plt.savefig("n3.k2.eigen_embeddings.png", bbox_inches='tight')
 
 
 #In[8]
@@ -103,4 +99,21 @@ plt.close()
 kmeans = KMeans(n_clusters=k+1, random_state=0).fit(v)
 clusters = kmeans.labels_
 nx.draw_spring(G, with_labels=True, node_color=clusters)
-plt.show()
+plt.savefig("n3.k2.manual_k.png", bbox_inches='tight')
+# %%
+
+
+#In[6]
+#visualize eigenvector components for n_graphs = 3, k = 2
+n_graphs = 3
+k = 3
+G = compose_n(n_karates(n_graphs))
+e, v = graph_eigs(G)
+v = v[:, -k:]
+fig, (ax1, ax2, ax3) = plt.subplots(3)
+fig.suptitle('Values of each point in the first 3 eigenvectors')
+ax3.bar(list(range(len(v[:, 0]))), v[:, 0])
+ax1.bar(list(range(len(v[:, 2]))), v[:, 2])
+ax2.bar(list(range(len(v[:, 1]))), v[:, 1])
+plt.savefig("top3.eigenvector_magnitudes.png", bbox_inches='tight')
+# %%
